@@ -13,7 +13,7 @@ function __constructor (dir){
   const app = Express();
   const loader = require(__dirname+'/loader');
   const routes = loader.routes(dir+'/routes');
-  app.locals.plugins = loader.modules(dir+'/modules');
+  app.locals.plugins = loader.modules(dir+'/plugins');
   // register the routes
   for (var i = 0; i < routes.length; i++) {
     if(Array.isArray(routes[i].path)){
