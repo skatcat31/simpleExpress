@@ -1,0 +1,17 @@
+{
+  "rules": {
+    "semi": [
+      2,
+      "always"
+    ],
+    "no-console": [
+      2,
+      {"allow": ["log","warn", "error", "info"]}
+    ],
+  },
+  "env": {
+    "es6": true,
+    "node": true
+  },
+  "extends": "eslint:recommended"
+}
