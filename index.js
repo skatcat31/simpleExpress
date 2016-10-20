@@ -22,8 +22,7 @@ function __constructor (dir){
       app.use(routes[i].path, routes[i].router);
     }
   }
-  // let's listen for connections
-  var serv;
+
   if(!argv.secure){
     (argv.port)? app.listen(argv.port, logStart):app.listen(logStart);
   }else{
@@ -35,16 +34,16 @@ function __constructor (dir){
     (argv.port)? server.listen(argv.p, logStart):server.listen(logStart);
   }
   app.disable('x-powered-by');
-
-  // Tell them we're up and running(useful if the script restarts. You'll notice it in log)
-  function logStart(){
-    console.log('================================================================================');
-    console.log('Server running '+Date());
-    console.log( 'PID: '+process.pid);
-    console.log( 'Port: '+ this.address().port);
-    console.log('================================================================================');
-  }
   return app;
+}
+
+// Tell them we're up and running(useful if the script restarts. You'll notice it in log)
+function logStart(){
+  console.log('================================================================================');
+  console.log('Server running '+Date());
+  console.log( 'PID: '+process.pid);
+  console.log( 'Port: '+ this.address().port);
+  console.log('================================================================================');
 }
 
 module.exports = __constructor;
