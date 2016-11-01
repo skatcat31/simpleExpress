@@ -90,6 +90,27 @@ function _enumRoutes(dir) {
     return tree;
 }
 
+/**
+ * _enumMiddleware - A specific enum function to passover a specific pattern
+ * Designed only to work with folders containing express based middleware
+ *
+ * @param  {String} dir The directory to traverse
+ * @return {Array}     An Array of object containing the route and routers
+ */
+function _enumMiddleware(dir) {
+    var tree = [];
+		if(!n.fs.existsSync(dir)){return tree;}
+    n.fs.readdirSync(dir).forEach(function (file) {
+        var stat, fullPath = n.path.join(dir, file);
+        stat = n.fs.statSync(fullPath);
+        if (stat.isDirectory()) {
+            //we want to push the object
+            tree.push(require(fullPath));
+        }
+    });
+    return tree;
+}
+
 
 /**
  * modules - Pre flight
@@ -117,7 +138,21 @@ function routes(dir) {
   return _enumRoutes(dir);
 }
 
+/**
+ * middleware - Pre Flight
+ *
+ * @param  {String} dir The directory to Traverse
+ * @return {Array}    The Array of Objects
+ */
+function middleware(dir) {
+  if (!n.isText(dir)) {
+      throw new TypeError("Parameter 'dir' must be a non-empty text string.");
+  }
+  return _enumMiddleware(dir);
+}
+
 module.exports = {
   modules,
-  routes
+  routes,
+	middleware
 };

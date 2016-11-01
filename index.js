@@ -11,17 +11,28 @@ function __constructor (dir){
   // start the app
   const	Express = require('express');
   const app = Express();
-  const loader = require(__dirname+'/loader');
+  const loader = require(dir+'/loader');
   const routes = loader.routes(dir+'/routes');
+  const middle = loader.middleware(dir+'/middleware');
+  const before = middle.filter(obj => obj.before).map(obj => obj.middleware);
+  const after = middle.filter(obj => obj.after).map(obj => obj.middleware);
   app.locals.plugins = loader.modules(dir+'/plugins');
+  //register the middleware to be called before routes
+  before.forEach(mw => {
+    app.use(mw);
+  });
   // register the routes
-  for (var i = 0; i < routes.length; i++) {
-    if(Array.isArray(routes[i].path)){
-      routes[i].path.forEach(p => app.use(p, routes[i].router));
+  routes.forEach(obj => {
+    if(Array.isArray(obj.path)){
+      obj.path.forEach(p => app.use(p, obj.router));
     }else{
-      app.use(routes[i].path, routes[i].router);
+      app.use(obj.path, obj.router);
     }
-  }
+  });
+  //register the middleware to be called after routes
+  after.forEach(mw => {
+    app.use(mw);
+  });
 
   if(!argv.secure){
     (argv.port)? app.listen(argv.port, logStart):app.listen(logStart);
