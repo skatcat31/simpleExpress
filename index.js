@@ -11,7 +11,7 @@ function __constructor (dir){
   // start the app
   const	Express = require('express');
   const app = Express();
-  const loader = require(dir+'/loader');
+  const loader = require(__dirname+'/loader');
   const routes = loader.routes(dir+'/routes');
   const middle = loader.middleware(dir+'/middleware');
   const before = middle.filter(obj => obj.before).map(obj => obj.middleware);
