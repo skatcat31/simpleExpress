@@ -1,5 +1,5 @@
 {
-  "name": "smipleexpress",
+  "name": "simpleexpress",
   "version": "1.0.0",
   "description": "A simple modular express server with auto loading and registration",
   "main": "index.js",
