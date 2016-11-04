@@ -26,16 +26,16 @@ Want a piece of code that can be used in more than one place? Make a plugin!
 Want a router that responds to requests? Make a Router!  
 Want to use views? Make a sub app, tell it what engine to use, and export it!
 
-In fact if this is done correctly all you have to do is provide the folders **routes** and **plugins**\* as well as a main file that calls the package and provides the **__dirname**, and that's it! Your routes and plugins will automatically be loaded.
+In fact if this is done correctly all you have to do is provide the folders **routes**, **middleware**\*, and **plugins**\* as well as a main file that calls the package and provides the **__dirname**, and that's it! Your routes and plugins will automatically be loaded.
 
 
 \*: *Optional*, if not found will not be loaded
 
 # To Do
  - Template app example
- - Automatic detection of global middleware
- - Automatic detection of global views
- - Automatic detection of nested views inside of Project Tree
+ - ~~Automatic detection of global middleware~~(added as of 1.0.0 release)
+ - ~~Automatic detection of global views~~(removed, mount a sub app and have a view engine, or use a plugin for global views for rendering)
+ - ~~Automatic detection of nested views inside of Project Tree~~(removed, see above)
  - CLI interface for global installs
  - Documentation
  - Testing

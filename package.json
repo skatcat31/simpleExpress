@@ -1,27 +1,30 @@
 {
   "name": "simpleexpress",
   "version": "1.0.0",
-  "description": "A simple modular express server with auto loading and registration",
+  "description": "A simple modular express server with auto loading",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/skatcat31/simpleExpress.git"
+    "url": "git+https://github.com/skatcat31/simpleexpress.git"
   },
   "keywords": [
     "express",
     "modular",
     "autoloading",
-    "beginner"
+    "beginner",
+    "web",
+    "server",
+    "web server"
   ],
   "author": "Robert Mennell <skatcat31@gmail.com>",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/skatcat31/simpleExpress/issues"
+    "url": "https://github.com/skatcat31/simpleexpress/issues"
   },
-  "homepage": "https://github.com/skatcat31/simpleExpress#readme",
+  "homepage": "https://github.com/skatcat31/simpleexpress#readme",
   "dependencies": {
     "express": "^4.14.0",
     "yargs": "^6.2.0"
