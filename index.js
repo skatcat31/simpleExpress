@@ -37,11 +37,11 @@ function __constructor (dir){
   if(!argv.secure){
     (argv.port)? app.listen(argv.port, logStart):app.listen(logStart);
   }else{
+    argv.secure = JSON.parse(argv.secure);
     var fs = require('fs');
-    var key = fs.readFileSync(argv.secure.key);
-    var cert = fs.readFileSync(argv.secure.cert);
-    var credentials = {key, cert};
-    var server = require('https').createServer(credentials, app);
+    argv.secure.key = fs.readFileSync(argv.secure.key);
+    argv.secure.cert = fs.readFileSync(argv.secure.cert);
+    var server = require('https').createServer(argv.secure, app);
     (argv.port)? server.listen(argv.p, logStart):server.listen(logStart);
   }
   app.disable('x-powered-by');
