@@ -1,6 +1,6 @@
 'use strict';
 
-function __constructor (dir){
+function __constructor (dir, noStart){
   const	packages = require(dir+'/package.json');
   const yargs = require('yargs');
   const argv = yargs
@@ -33,16 +33,17 @@ function __constructor (dir){
   after.forEach(mw => {
     app.use(mw);
   });
-
-  if(!argv.secure){
-    (argv.port)? app.listen(argv.port, logStart):app.listen(logStart);
-  }else{
-    argv.secure = JSON.parse(argv.secure);
-    var fs = require('fs');
-    argv.secure.key = fs.readFileSync(argv.secure.key);
-    argv.secure.cert = fs.readFileSync(argv.secure.cert);
-    var server = require('https').createServer(argv.secure, app);
-    (argv.port)? server.listen(argv.p, logStart):server.listen(logStart);
+  if(!noStart)
+  {
+    if(!argv.secure){
+      (argv.port)? app.listen(argv.port, logStart):app.listen(logStart);
+    }else{
+      var fs = require('fs');
+      argv.secure.key = fs.readFileSync(argv.secure.key);
+      argv.secure.cert = fs.readFileSync(argv.secure.cert);
+      var server = require('https').createServer(argv.secure, app);
+      (argv.port)? server.listen(argv.p, logStart):server.listen(logStart);
+    }
   }
   app.disable('x-powered-by');
   return app;

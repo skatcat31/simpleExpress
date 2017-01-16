@@ -31,7 +31,19 @@ In fact if this is done correctly all you have to do is provide the folders **ro
 
 \*: *Optional*, if not found will not be loaded
 
+# Delayed launching
+Often times it's useful to launch the server separate from the express app, and just mount the express app. To do this instead pass a second argument that loosely evaluates to true. This will return the application, and it will not call the express server shortcut.  
+```javascript
+const app = require('simpleexpress')(__dirname, true);
+const server = require('http').createServer();
+server.on('request', app);
+server.listen();
+```
+
 # To Do
+ - ~~Delay auto starting of application~~(added as of 1.1.0)  
+ Pass constructor second argument(loose eval to true delays)  
+ This allows you to manually register the auto loaded application into a server(useful for websockets or other more advanced HTTP features)
  - Template app example
  - ~~Automatic detection of global middleware~~(added as of 1.0.0 release)
  - ~~Automatic detection of global views~~(removed, mount a sub app and have a view engine, or use a plugin for global views for rendering)
