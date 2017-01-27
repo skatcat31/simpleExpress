@@ -44,6 +44,8 @@ function __constructor (dir, noStart){
       var server = require('https').createServer(argv.secure, app);
       (argv.port)? server.listen(argv.p, logStart):server.listen(logStart);
     }
+  }else{
+    app.locals.logStart = logStart;
   }
   app.disable('x-powered-by');
   return app;
