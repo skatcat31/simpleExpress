@@ -59,12 +59,21 @@ function _enumJS(dir) {
     var tree = {};
 		if(!n.fs.existsSync(dir)){return tree;}
     n.fs.readdirSync(dir).forEach(function (file) {
-        var stat, fullPath = n.path.join(dir, file);
+        var stat, name, fullPath = n.path.join(dir, file);
         stat = n.fs.statSync(fullPath);
         if (stat.isDirectory()) {
-            var dirName = camelizeVar(file);
-            tree[dirName] = require(fullPath);
-        }
+            name = camelizeVar(file);
+						if(!name.length || name in tree){
+								throw new Error("Empty or duplicate camelized folder name: " + fullPath);
+						}
+            tree[name] = require(fullPath);
+        } else if (n.path.extname(file).toLowerCase() === '.js') {
+						name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
+						if(!name.length || name in tree){
+								throw new Error("Empty or duplicate camelized file name: " + fullPath);
+						}
+						tree[name] = require(fullPath);
+				}
     });
     return tree;
 }
@@ -80,37 +89,21 @@ function _enumRoutes(dir) {
     var tree = [];
 		if(!n.fs.existsSync(dir)){return tree;}
     n.fs.readdirSync(dir).forEach(function (file) {
-        var stat, fullPath = n.path.join(dir, file);
+        var stat, name, fullPath = n.path.join(dir, file);
         stat = n.fs.statSync(fullPath);
         if (stat.isDirectory()) {
             //we want to push the object and it's routes
             tree.push(require(fullPath));
-        }
+        } else if (n.path.extname(file).toLowerCase() === '.js') {
+						name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
+						if(!name.length){
+								throw new Error("Empty file name: " + fullPath);
+						}
+						tree.push(require(fullPath));
+				}
     });
     return tree;
 }
-
-/**
- * _enumMiddleware - A specific enum function to passover a specific pattern
- * Designed only to work with folders containing express based middleware
- *
- * @param  {String} dir The directory to traverse
- * @return {Array}     An Array of object containing the route and routers
- */
-function _enumMiddleware(dir) {
-    var tree = [];
-		if(!n.fs.existsSync(dir)){return tree;}
-    n.fs.readdirSync(dir).forEach(function (file) {
-        var stat, fullPath = n.path.join(dir, file);
-        stat = n.fs.statSync(fullPath);
-        if (stat.isDirectory()) {
-            //we want to push the object
-            tree.push(require(fullPath));
-        }
-    });
-    return tree;
-}
-
 
 /**
  * modules - Pre flight
@@ -148,7 +141,7 @@ function middleware(dir) {
   if (!n.isText(dir)) {
       throw new TypeError("Parameter 'dir' must be a non-empty text string.");
   }
-  return _enumMiddleware(dir);
+  return _enumRoutes(dir);
 }
 
 module.exports = {
