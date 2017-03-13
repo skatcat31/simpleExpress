@@ -23,11 +23,7 @@ function __constructor (dir, noStart){
   });
   // register the routes
   routes.forEach(obj => {
-    if(Array.isArray(obj.path)){
-      obj.path.forEach(p => app.use(p, obj.router));
-    }else{
-      app.use(obj.path, obj.router);
-    }
+    app.use(obj.path, obj.router);
   });
   //register the middleware to be called after routes
   after.forEach(mw => {
