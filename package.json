@@ -1,6 +1,6 @@
 {
   "name": "simpleexpress",
-  "version": "1.2.1",
+  "version": "1.2.2",
   "description": "A simple modular express server with auto loading",
   "main": "index.js",
   "scripts": {
