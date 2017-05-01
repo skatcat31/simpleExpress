@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/skatcat31/simpleexpress#readme",
   "dependencies": {
-    "express": "^4.14.0",
-    "yargs": "^6.2.0"
+    "express": "^4.x",
+    "yargs": "^6.x"
   }
 }
