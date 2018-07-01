@@ -28,7 +28,7 @@ In fact if this is done correctly all you have to do is provide the folders **ro
 
 \*: *Optional*, if not found will not be loaded
 
-### Middleware
+### middleware
 Middleware is any found require in the **middleware** folder with the following export properties:
 
 ```js
