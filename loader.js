@@ -5,8 +5,8 @@
 
 // The includes
 var n = {
-	fs: require('fs'),
-	path: require('path'),
+  fs: require('fs'),
+  path: require('path'),
   isText: isText
 };
 
@@ -18,7 +18,7 @@ var n = {
  * @return {Boolean}      true or false
  */
 function isText(t) {
-    return t && typeof t === 'string' && /\S/.test(t);
+  return t && typeof t === 'string' && /\S/.test(t);
 }
 
 /**
@@ -28,10 +28,10 @@ function isText(t) {
  * @return {String}      The camelCased string
  */
 function camelize(text) {
-    text = text.replace(/[\-_\s\.]+(.)?/g, function (match, chr) {
-        return chr ? chr.toUpperCase() : '';
-    });
-    return text.substr(0, 1).toLowerCase() + text.substr(1);
+  text = text.replace(/[\-_\s\.]+(.)?/g, function (match, chr) {
+    return chr ? chr.toUpperCase() : '';
+  });
+  return text.substr(0, 1).toLowerCase() + text.substr(1);
 }
 
 /**
@@ -43,8 +43,8 @@ function camelize(text) {
  * @return {String}      The camelCased, property safe string
  */
 function camelizeVar(text) {
-    text = text.replace(/[^a-zA-Z0-9\$_\-\s\.]/g, '').replace(/^[0-9_\-\s\.]+/, '');
-		return camelize(text);
+  text = text.replace(/[^a-zA-Z0-9\$_\-\s\.]/g, '').replace(/^[0-9_\-\s\.]+/, '');
+  return camelize(text);
 }
 
 /**
@@ -56,26 +56,26 @@ function camelizeVar(text) {
  * @return {Object}     the Tree Object containing the properties
  */
 function _enumJS(dir) {
-    var tree = {};
-		if(!n.fs.existsSync(dir)){return tree;}
-    n.fs.readdirSync(dir).forEach(function (file) {
-        var stat, name, fullPath = n.path.join(dir, file);
-        stat = n.fs.statSync(fullPath);
-        if (stat.isDirectory()) {
-            name = camelizeVar(file);
-						if(!name.length || name in tree){
-								throw new Error("Empty or duplicate camelized folder name: " + fullPath);
-						}
-            tree[name] = require(fullPath);
-        } else if (n.path.extname(file).toLowerCase() === '.js') {
-						name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
-						if(!name.length || name in tree){
-								throw new Error("Empty or duplicate camelized file name: " + fullPath);
-						}
-						tree[name] = require(fullPath);
-				}
-    });
-    return tree;
+  var tree = {};
+  if (!n.fs.existsSync(dir)) { return tree; }
+  n.fs.readdirSync(dir).forEach(function (file) {
+    var stat, name, fullPath = n.path.join(dir, file);
+    stat = n.fs.statSync(fullPath);
+    if (stat.isDirectory()) {
+      name = camelizeVar(file);
+      if (!name.length || name in tree) {
+        throw new Error("Empty or duplicate camelized folder name: " + fullPath);
+      }
+      tree[name] = require(fullPath);
+    } else if (n.path.extname(file).toLowerCase() === '.js') {
+      name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
+      if (!name.length || name in tree) {
+        throw new Error("Empty or duplicate camelized file name: " + fullPath);
+      }
+      tree[name] = require(fullPath);
+    }
+  });
+  return tree;
 }
 
 /**
@@ -86,23 +86,23 @@ function _enumJS(dir) {
  * @return {Array}     An Array of object containing the route and routers
  */
 function _enumRoutes(dir) {
-    var tree = [];
-		if(!n.fs.existsSync(dir)){return tree;}
-    n.fs.readdirSync(dir).forEach(function (file) {
-        var stat, name, fullPath = n.path.join(dir, file);
-        stat = n.fs.statSync(fullPath);
-        if (stat.isDirectory()) {
-            //we want to push the object and it's routes
-            tree.push(require(fullPath));
-        } else if (n.path.extname(file).toLowerCase() === '.js') {
-						name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
-						if(!name.length){
-								throw new Error("Empty file name: " + fullPath);
-						}
-						tree.push(require(fullPath));
-				}
-    });
-    return tree;
+  var tree = [];
+  if (!n.fs.existsSync(dir)) { return tree; }
+  n.fs.readdirSync(dir).forEach(function (file) {
+    var stat, name, fullPath = n.path.join(dir, file);
+    stat = n.fs.statSync(fullPath);
+    if (stat.isDirectory()) {
+      //we want to push the object and it's routes
+      tree.push(require(fullPath));
+    } else if (n.path.extname(file).toLowerCase() === '.js') {
+      name = camelizeVar(file.replace(/\.[^/.]+$/, ''));
+      if (!name.length) {
+        throw new Error("Empty file name: " + fullPath);
+      }
+      tree.push(require(fullPath));
+    }
+  });
+  return tree;
 }
 
 /**
@@ -112,10 +112,10 @@ function _enumRoutes(dir) {
  * @return {Object}     The Tree Object
  */
 function modules(dir) {
-    if (!n.isText(dir)) {
-        throw new TypeError("Parameter 'dir' must be a non-empty text string.");
-    }
-    return _enumJS(dir);
+  if (!n.isText(dir)) {
+    throw new TypeError("Parameter 'dir' must be a non-empty text string.");
+  }
+  return _enumJS(dir);
 }
 
 /**
@@ -126,7 +126,7 @@ function modules(dir) {
  */
 function routes(dir) {
   if (!n.isText(dir)) {
-      throw new TypeError("Parameter 'dir' must be a non-empty text string.");
+    throw new TypeError("Parameter 'dir' must be a non-empty text string.");
   }
   return _enumRoutes(dir);
 }
@@ -139,7 +139,7 @@ function routes(dir) {
  */
 function middleware(dir) {
   if (!n.isText(dir)) {
-      throw new TypeError("Parameter 'dir' must be a non-empty text string.");
+    throw new TypeError("Parameter 'dir' must be a non-empty text string.");
   }
   return _enumRoutes(dir);
 }
@@ -147,5 +147,5 @@ function middleware(dir) {
 module.exports = {
   modules,
   routes,
-	middleware
+  middleware
 };
