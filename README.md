@@ -28,8 +28,43 @@ Want to use views? Make a sub app, tell it what engine to use, and export it!
 
 In fact if this is done correctly all you have to do is provide the folders **routes**, **middleware**\*, and **plugins**\* as well as a main file that calls the package and provides the **__dirname**, and that's it! Your routes and plugins will automatically be loaded.
 
-
 \*: *Optional*, if not found will not be loaded
+
+### Middleware
+Middleware is any found require in the **middleware** folder with the following export properties:
+
+```js
+{
+  before: Boolean, // does this get used globally before routes?
+  after: Boolean, // does this middleware get user after routes?
+  middleware: Function // the actual expressjs compatible middleware
+}
+```
+Notes:
+
+ - Because these filed are loaded as global middleware it will load in the order that the filesystem returns them in
+ - Middleware can be double registered as both before *and* after. This is helpful for debugging middleware that would track the lifecycle of the request
+ 
+### routes
+Routes is any found require in the **routes** folder with the following export properties:
+
+```js
+{
+  path: String, // route string to be passed to app.use
+  router: Function, // expressJS Router instance to be passed to app.use
+  handler Function // alias of router
+}
+```
+
+### plugins
+A Plugin is a function that is loaded from the **plugins** directory. It is merely a function that will be loaded with the Filesystem Stats name after converting it to camelcase as the plugin reference
+```js
+// logger.js
+module.exports = arg => console.log(arg);
+
+// middleware
+req.app.locals.plugins.logger('hello from your handler';
+```
 
 # Delayed launching
 Often times it's useful to launch the server separate from the express app, and just mount the express app. To do this instead pass a second argument that loosely evaluates to true. This will return the application, and it will not call the express server shortcut.  
