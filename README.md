@@ -75,6 +75,18 @@ server.on('request', app);
 server.listen();
 ```
 
+# Port and SSL configuration
+It'd be nice to load some often used configuration like where the SSL configuration lives and what port to launch from. These are loaded from the Package.json using Yargs and accepts the following format:
+```js
+{
+  port: Number, // [optional] what port to automatically launch from when done scaffolding. If not found random
+  secure: { // [optional] if not found will be launched without SSL support over plain HTTP port
+    key: String, // path to key for SSL
+    cert: String // path to cert for SSL
+  }
+}
+```
+
 # To Do
  - ~~Delay auto starting of application~~(added as of 1.1.0)  
  Pass constructor second argument(loose eval to true delays)  
