@@ -1,5 +1,3 @@
-# Simple README for now explaining the purpose of this repository as it will be developed
-
 # simpleExpress
 a simple express framework designed to work on convention, not configuration
 
