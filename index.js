@@ -1,34 +1,44 @@
 'use strict';
 
-function __constructor(dir, noStart) {
+function scaffold(dir, noStart) {
+
+  // static imports
   const packages = require(dir + '/package.json');
   const yargs = require('yargs');
+  const Express = require('express');
+  const loader = require(__dirname + '/loader');
+
+  // load port and secure if available in package.json
   const argv = yargs
     .help('h')
     .options(packages.args)
     .version(packages.version)
     .argv;
-  // start the app
-  const Express = require('express');
+
+  // scaffold the application
   const app = Express();
-  const loader = require(__dirname + '/loader');
   const routes = loader.routes(dir + '/routes');
   const middle = loader.middleware(dir + '/middleware');
   const before = middle.filter(obj => obj.before).map(obj => obj.middleware);
   const after = middle.filter(obj => obj.after).map(obj => obj.middleware);
   app.locals.plugins = loader.modules(dir + '/plugins');
+
   //register the middleware to be called before routes
   before.forEach(mw => {
     app.use(mw);
   });
+
   // register the routes
   routes.forEach(obj => {
     app.use(obj.path, obj.router || obj.handler);
   });
+
   //register the middleware to be called after routes
   after.forEach(mw => {
     app.use(mw);
   });
+
+  // start listening
   if (!noStart) {
     if (!argv.secure) {
       (argv.port) ? app.listen(argv.port, logStart) : app.listen(logStart);
@@ -55,4 +65,4 @@ function logStart() {
   console.log('================================================================================');
 }
 
-module.exports = __constructor;
+module.exports = scaffold;
